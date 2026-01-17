@@ -1,63 +1,78 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
+use App\Models\Mahasiswa;
 
-//nomor 1
-Route::get('/profil', function () {
-    return 'profil siswa';
+Route::get('/', function () {
+    return view('welcome');
 });
 
-//nomor 2
-Route::get('/siswa/{nama}', function ($nama) {
-    return $nama;
-});
+Route::get('/data', function () {
+    // Ambil semua data mahasiswa dari database
+    $mahasiswa = Mahasiswa::all();
 
-//nomor 3
-Route::get('/kelas/{nama?}', function ($nama = 'sanjaya') {
-    return 'nama siswa adalah ' . $nama;
-});
-
-//nomor 4
-Route::get('/nilai/{angka}', function ($angka) {
-    return "Menampilkan nilai $angka";
-})->where('angka', '[0-9]|[1-9][0-9]|100');
-
-//nomor 5
-route::get('/dashboard', function(){
-    return 'ini adalah halaman dashboard';
+    // Kirim ke view 'data'
+    return view('data', compact('mahasiswa'));
 });
 
 
-Route::redirect('/home', '/dashboard');
-//nomor 6
-Route::prefix('/admin')->group(function(){
-    Route::get('/login', function(){
-        return 'ini adalah halaman login admin';
+Route::prefix('/latihanRoute')->group(function () {
+    //nomor 1
+    Route::get('/profil', function () {
+        return 'profil siswa';
     });
-    Route::get('/dashboard', function(){
-        return 'ini adalah halaman dashboard admin';
+
+    //nomor 2
+    Route::get('/siswa/{nama}', function ($nama) {
+        return $nama;
     });
-});
 
-//nomor 7
-Route::fallback(function(){
-    return 'halaman tidak ditemukan';
-});
-//nomor 8
-Route::get('produk/detail', function() {
-    return 'ini adalah halaman detail produk';
-});
+    //nomor 3
+    Route::get('/kelas/{nama?}', function ($nama = 'sanjaya') {
+        return 'nama siswa adalah ' . $nama;
+    });
 
-Route::get('produk/{id}', function($id) {
-    return 'ini adalah halaman detail produk ' . $id;
-});
-//nomor 9
-Route::get('data-siswa', function() {
-    return 'ini adalah halaman data siswa';
-});
+    //nomor 4
+    Route::get('/nilai/{angka}', function ($angka) {
+        return "Menampilkan nilai $angka";
+    })->where('angka', '[0-9]|[1-9][0-9]|100');
 
-Route::get('data-guru', function() {
-    return 'ini adalah halaman data guru';
-});
+    //nomor 5
+    route::get('/dashboard', function () {
+        return 'ini adalah halaman dashboard';
+    });
 
-//Cek route pakai terminal php artisan route:list
+
+    Route::redirect('/home', '/dashboard');
+    //nomor 6
+    Route::prefix('/admin')->group(function () {
+        Route::get('/login', function () {
+            return 'ini adalah halaman login admin';
+        });
+        Route::get('/dashboard', function () {
+            return 'ini adalah halaman dashboard admin';
+        });
+    });
+
+    //nomor 7
+    Route::fallback(function () {
+        return 'halaman tidak ditemukan';
+    });
+    //nomor 8
+    Route::get('produk/detail', function () {
+        return 'ini adalah halaman detail produk';
+    });
+
+    Route::get('produk/{id}', function ($id) {
+        return 'ini adalah halaman detail produk ' . $id;
+    });
+    //nomor 9
+    Route::get('data-siswa', function () {
+        return 'ini adalah halaman data siswa';
+    });
+
+    Route::get('data-guru', function () {
+        return 'ini adalah halaman data guru';
+    });
+
+    //Cek route pakai terminal php artisan route:list
+});
