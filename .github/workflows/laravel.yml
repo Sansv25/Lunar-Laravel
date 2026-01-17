@@ -25,14 +25,25 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
 
-      - name: Copy env
-        run: cp .env.example .env
+      # Override .env khusus untuk pipeline agar tidak butuh MySQL
+      - name: Setup .env for export
+        run: |
+          echo "APP_ENV=production" > .env
+          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
+          echo "APP_DEBUG=false" >> .env
+          echo "APP_URL=http://localhost" >> .env
+          echo "DB_CONNECTION=sqlite" >> .env
+          echo "DB_DATABASE=:memory:" >> .env
+          echo "SESSION_DRIVER=file" >> .env
+          echo "CACHE_STORE=file" >> .env
+          echo "QUEUE_CONNECTION=sync" >> .env
+          echo "MAIL_MAILER=log" >> .env
 
       - name: Generate key
         run: php artisan key:generate
 
       - name: Export static site
-        run: php artisan export
+        run: php artisan export -vvv
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
