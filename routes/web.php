@@ -8,7 +8,7 @@ Route::get('/', function () {
 
 Route::get('/data', function () {
     // Ambil semua data mahasiswa dari database
-    $mahasiswa = Mahasiswa::all();
+    $mahasiswa = Mahasiswa::limit(100)->get();
 
     // Kirim ke view 'data'
     return view('data', compact('mahasiswa'));
